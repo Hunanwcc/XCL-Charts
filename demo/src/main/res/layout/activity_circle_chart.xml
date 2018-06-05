@@ -21,16 +21,16 @@
  				 <!--  half -->
    				 <com.demo.xclcharts.view.CircleChart01View
 			         android:id="@+id/halfcircle_view"
-			         android:layout_width="200dip"  
-			         android:layout_height="100dip"  
+			         android:layout_width="80dp"
+			         android:layout_height="80dp"
 			          android:layout_gravity="center_vertical|right"
-			      />   	
+			      />
 			         
    				   <!--  full --> 				 			         		
    				   <com.demo.xclcharts.view.CircleChart02View
 			         android:id="@+id/circle_view"
-			         android:layout_width="200dip"  
-			         android:layout_height="200dip"  
+			         android:layout_width="80dp"
+			         android:layout_height="80dp"
 			         android:layout_gravity="center_vertical|left"
 			       />   	
 			       

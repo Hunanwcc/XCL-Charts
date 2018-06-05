@@ -70,7 +70,7 @@ public class CircleChart extends CirChart {
     protected List<PieData> mDataSet;
 
     /**
-     * moRadius 的值控制？？？？
+     * moRadius 的值控制外环比
      * miRadius 的值控制得分百分比的宽度
      */
     private float moRadius = 0.9f;
@@ -94,7 +94,8 @@ public class CircleChart extends CirChart {
     	if(null != getLabelPaint())
     	{
 	        getLabelPaint().setColor(Color.WHITE);
-	        getLabelPaint().setTextSize(36);
+	        getLabelPaint().setTextSize(40);
+	        getLabelPaint().setColor(Color.BLACK);
 	        getLabelPaint().setTextAlign(Align.CENTER);
     	}
       
@@ -171,8 +172,8 @@ public class CircleChart extends CirChart {
     	 if(null == mPaintDataInfo)
          {
  	        mPaintDataInfo = new Paint();
- 	        mPaintDataInfo.setTextSize(44);
- 	        mPaintDataInfo.setColor(Color.WHITE);
+ 	        mPaintDataInfo.setTextSize(40);
+ 	        mPaintDataInfo.setColor(Color.BLACK);
  	        mPaintDataInfo.setTextAlign(Align.CENTER);
  	        mPaintDataInfo.setAntiAlias(true);
          }
