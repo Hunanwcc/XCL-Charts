@@ -22,17 +22,17 @@
  */
 package com.demo.xclcharts.view;
 
-import java.util.LinkedList;
-
-import org.xclcharts.chart.CircleChart;
-import org.xclcharts.chart.PieData;
-import org.xclcharts.view.GraphicalView;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
+
+import org.xclcharts.chart.CircleChart;
+import org.xclcharts.chart.PieData;
+import org.xclcharts.view.GraphicalView;
+
+import java.util.LinkedList;
 /**
  * @ClassName CircleChart02View
  * @Description  图形图例子
@@ -82,13 +82,13 @@ public class CircleChart02View extends GraphicalView {
 			chart.setAttributeInfo(mDataInfo); 	
 			//数据源
 			chart.setDataSource(mlPieData);
-			
-			//背景色
-			chart.getBgCirclePaint().setColor(Color.rgb(117, 197, 141));
-			//深色
-			chart.getFillCirclePaint().setColor(Color.rgb(77, 180, 123));
-			//信息颜色
-			chart.getDataInfoPaint().setColor(Color.rgb(243, 75, 125));
+
+			//背景色   红色
+			chart.getBgCirclePaint().setColor(Color.rgb(248, 9, 46));
+			//深色   黄色
+			chart.getFillCirclePaint().setColor(Color.rgb(243, 252, 0));
+			//信息颜色    绿色
+			chart.getDataInfoPaint().setColor(Color.rgb(21, 255, 0));
 			//显示边框
 			chart.showRoundBorder();
 			
@@ -103,18 +103,19 @@ public class CircleChart02View extends GraphicalView {
 	{					
 		//PieData(标签，百分比，在饼图中对应的颜色)
 		mlPieData.clear();	
-		int color = Color.rgb(72, 201, 176);
+//		int color = Color.rgb(72, 201, 176);
 		if(per < 40)
 		{
 			mDataInfo = "容易容易";
 		}else if(per < 60){
 			mDataInfo = "严肃认真";
-			color = Color.rgb(246, 202, 13);
+//			color = Color.rgb(246, 202, 13);
 		}else{
 			mDataInfo = "压力山大";
-			color = Color.rgb(243, 75, 125);
+//			color = Color.rgb(243, 75, 125);
 		}
-		mlPieData.add(new PieData(Integer.toString(per)+"%",per,color));		
+		//蓝色
+		mlPieData.add(new PieData(Integer.toString(per)+"%",per, Color.rgb(4, 12, 251)));
 			
 	}
 

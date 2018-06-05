@@ -23,20 +23,20 @@
 
 package org.xclcharts.chart;
 
-import java.util.List;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Align;
+import android.graphics.PointF;
+import android.graphics.RectF;
+import android.util.Log;
 
 import org.xclcharts.common.DrawHelper;
 import org.xclcharts.common.MathHelper;
 import org.xclcharts.renderer.CirChart;
 import org.xclcharts.renderer.XEnum;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PointF;
-import android.graphics.Paint.Align;
-import android.graphics.RectF;
-import android.util.Log;
+import java.util.List;
 
 
 /**    
@@ -53,8 +53,8 @@ public class CircleChart extends CirChart {
     private String mDataInfo = "";
     private XEnum.CircleType mDisplayType = XEnum.CircleType.FULL;
     //内环填充颜色
-    private Paint mPaintBgCircle=null;
-    private Paint mPaintFillCircle = null;
+    private Paint mPaintBgCircle=null;//环形百分比 背景
+    private Paint mPaintFillCircle = null;//圆形背景色
     private Paint mPaintDataInfo = null;
     
     //内部填充
@@ -68,9 +68,13 @@ public class CircleChart extends CirChart {
 
     //数据源
     protected List<PieData> mDataSet;
-    
+
+    /**
+     * moRadius 的值控制？？？？
+     * miRadius 的值控制得分百分比的宽度
+     */
     private float moRadius = 0.9f;
-    private float miRadius = 0.8f;
+    private float miRadius = 0.9f;
     
    
 
@@ -167,7 +171,7 @@ public class CircleChart extends CirChart {
     	 if(null == mPaintDataInfo)
          {
  	        mPaintDataInfo = new Paint();
- 	        mPaintDataInfo.setTextSize(22);
+ 	        mPaintDataInfo.setTextSize(44);
  	        mPaintDataInfo.setColor(Color.WHITE);
  	        mPaintDataInfo.setTextAlign(Align.CENTER);
  	        mPaintDataInfo.setAntiAlias(true);
@@ -313,7 +317,7 @@ public class CircleChart extends CirChart {
 
 
     /**
-     * 绘制图
+     * 绘制图  就是画扇形，叠加图
      */
     protected boolean renderPlot(Canvas canvas){
         try {
@@ -359,14 +363,14 @@ public class CircleChart extends CirChart {
                     float oRadius = MathHelper.getInstance().round(mul(hRadius , moRadius),2);
                     float iRadius = MathHelper.getInstance().round( mul(hRadius , miRadius ),2);
                                        
-                    if(isShowInnerBG()) //内部背景填充
+                    if(isShowInnerBG()) //内部内部背景
                     {
                     	drawPercent(canvas, getBgCirclePaint(), cirX, hCirY, hRadius, 180f, 180f);                    	                    	
                     }else{
                     	oRadius = iRadius = hRadius;
                     }
                     
-                    if(isShowInnerFill())
+                    if(isShowInnerFill())//显示内部填充色
                     {
 	                    drawPercent(canvas, getFillCirclePaint(), cirX, hCirY, oRadius, 180f, 180f);
                     }
@@ -390,20 +394,32 @@ public class CircleChart extends CirChart {
                     if("" != mDataInfo )
                     	canvas.drawText(mDataInfo, cirX, hCirY - infoHeight, getDataInfoPaint());
 
+
                 } else {
+                    /**
+                     *整个圆。绘制扇形
+                     *  * 过程详解：
+                     * 第一步  绘制出0%默认颜色区域
+                     * 第二部 绘制出已占有的扇形，
+                     * 第三步 绘制出背景底色
+                     * 第四部 绘制文字到底色中心
+                     */
                     currentAngle = MathHelper.getInstance().getSliceAngle(360.f, (float) cData.getPercentage());
                     
-                    if(isShowInnerBG())
+                    if(isShowInnerBG())//是否显示背景色
                     	canvas.drawCircle(cirX, cirY, radius, getBgCirclePaint());
-                    	// canvas.drawCircle(cirX, cirY, (float) (Math.round(radius * 0.9f)), mPaintFillCircle);
+//                    	canvas.drawCircle(cirX, cirY, (float) (Math.round(radius * 0.9f)), mPaintFillCircle);
                     
                     
-                    if(isShowInnerFill())
+                    if(isShowInnerFill())//
                     {
                     	float fillRadius = MathHelper.getInstance().round(mul(radius , moRadius),2);
                     	canvas.drawCircle(cirX, cirY, fillRadius, getFillCirclePaint());                                     
                     }
-        	    	        	    	                    
+                    /**
+                     * 蓝色
+                     */
+//                    canvas.drawCircle(cirX, cirY, radius, paintArc);
                     canvas.drawArc(arcRF0, mOffsetAngle, currentAngle, true, paintArc);
                     
      				//////////////////
@@ -414,8 +430,7 @@ public class CircleChart extends CirChart {
 	                    float capRadius = cap +  (radius - cap) /2 ;
 	                    
 	                    //箭头
-	                    if(isShowInnerBG())
-	                    {
+	                    if(isShowInnerBG()) {
 	                    	paintArc.setColor( getBgCirclePaint().getColor() );
 	                    }else{
 	                    	paintArc.setColor( getFillCirclePaint().getColor() );
@@ -436,10 +451,11 @@ public class CircleChart extends CirChart {
                     }
         	    	////////////////////        	    	
                     
-                    if(isShowInnerFill())
-                    	canvas.drawCircle(cirX, cirY, 
-                    					MathHelper.getInstance().round(mul(radius , miRadius ),2), getFillCirclePaint());
-                    
+                    if(isShowInnerFill()){//再次画出黄色区域
+                        canvas.drawCircle(cirX, cirY,
+                                MathHelper.getInstance().round(mul(radius , miRadius ),2), getFillCirclePaint());
+                    }
+
                     if("" != cData.getLabel())
                        canvas.drawText(cData.getLabel(), cirX, getCirY(cirY,LabelHeight), getLabelPaint());
 
